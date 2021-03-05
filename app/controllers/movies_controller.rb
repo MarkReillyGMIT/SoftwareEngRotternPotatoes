@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
     @ratings_to_show = params[:ratings]
   
     #Sorting
-    sort = params[:sort]
+    sort = params[:sort] or session[:sort]
    
     case sort
     when 'title'
@@ -27,8 +27,15 @@ class MoviesController < ApplicationController
       else
         @ratings_to_show = params[:ratings]
       end
+    elsif session[:ratings]
+      @ratings_to_show = session[:ratings]
     else
       @ratings_to_show = @all_ratings
+    end
+    
+    if params[:sort] != session[:sort] or params[:ratings] != session[:ratings]
+      session[:sort], session[:ratings] = sort, @ratings_to_show
+      redirect_to movies_path sort: sort, ratings: @ratings_to_show
     end
     
     @movies = Movie.with_ratings(@ratings_to_show).order(sort)
