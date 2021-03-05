@@ -20,7 +20,6 @@ class MoviesController < ApplicationController
       ordering, @release_date_header = {:release_date => :asc}, "hilite"
     end
     
-   #Check boxes 
     if params[:ratings]
       if params[:ratings].kind_of?(Hash)
         @ratings_to_show =params[:ratings].keys
