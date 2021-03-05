@@ -10,7 +10,7 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     @ratings_to_show = params[:ratings]
   
-    #Sorting
+    #Sorting and filtering
     sort = params[:sort] or session[:sort]
    
     case sort
@@ -20,7 +20,7 @@ class MoviesController < ApplicationController
       ordering, @release_date_header = {:release_date => :asc}, "hilite"
     end
     
-   
+   #Check boxes 
     if params[:ratings]
       if params[:ratings].kind_of?(Hash)
         @ratings_to_show =params[:ratings].keys
@@ -32,7 +32,7 @@ class MoviesController < ApplicationController
     else
       @ratings_to_show = @all_ratings
     end
-    
+    #If there is no sort or ratings, set the session of those.
     if params[:sort] != session[:sort] or params[:ratings] != session[:ratings]
       session[:sort], session[:ratings] = sort, @ratings_to_show
       redirect_to movies_path sort: sort, ratings: @ratings_to_show
